@@ -440,24 +440,22 @@
                     throw new Error('所有代理服务器都不可用');
                 }
 
-                // 提取腾讯视频数据
-                const attentNumMatch = html.match(/"attent_num"\s*:\s*"(\d+)"/);
-                const hotNumMatch = html.match(/"hot_num"\s*:\s*"(\d+)"/);
+// 提取腾讯视频数据
+const attentNumMatch = html.match(/"attent_num"\s*:\s*"(\d+)"/);
+const hotNumMatch = html.match(/"hot_num"\s*:\s*"(\d+)"/);
 
-                // 匹配第二个 holly_online_time 的值
-                const allOnlineMatches = [...html.matchAll(/"holly_online_time"\s*:\s*"([^"]*)"/g)];
-                let onlineTimeValue = '--';
+// 匹配 hollywood_online 的值（修正了字段名）
+const onlineTimeMatch = html.match(/"hollywood_online"\s*:\s*"([^"]*)"/);
+let onlineTimeValue = '--';
 
-                // 如果找到至少两个匹配项，使用第二个
-                if (allOnlineMatches.length >= 2) {
-                    onlineTimeValue = allOnlineMatches[1][1];
-                    console.log('第二个 holly_online_time 的值:', onlineTimeValue);
-                } else if (allOnlineMatches.length === 1) {
-                    onlineTimeValue = allOnlineMatches[0][1];
-                    console.log('只有一个 holly_online_time 的值:', onlineTimeValue);
-                } else {
-                    console.log('未找到 holly_online_time 的值');
-                }
+if (onlineTimeMatch && onlineTimeMatch[1]) {
+    onlineTimeValue = onlineTimeMatch[1];
+    console.log('hollywood_online 的值:', onlineTimeValue);
+} else {
+    console.log('未找到 hollywood_online 的值');
+}
+
+
 
                 // 获取微博指数数据（使用代理）
                 const weiboApiUrl = 'https://rprank.tv.weibo.cn/episode/api/detail?current_uid=2136166244&pid=2914&sign=ba936624d41375dfc87725e8053450701c1209c8&program_type=0&ts=1763293437&c=applet&gsid=_2A25EHO_xDeRxGeRP6FQQ9ijOzziIHXVkiGQ5rDV6PUJbkdAbLUr3kWpNUCimGn5NW5S8nmOlxWq3tcul_4Q0Xgo7';
